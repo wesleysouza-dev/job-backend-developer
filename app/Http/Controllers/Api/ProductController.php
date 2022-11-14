@@ -18,6 +18,7 @@ class ProductController extends Controller
     public function index()
     {
         $products = Product::all();
+
         return ProductResource::collection($products);
     }
 
@@ -37,7 +38,7 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePostRequest $request)
+    public function store(StoreProductRequest $request)
     {
         $products = Product::create($request->all());
 

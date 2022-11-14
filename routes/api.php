@@ -15,8 +15,11 @@ use App\Http\Controllers\Api\ProductController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
 
-Route::apiResource('products',ProductController::class);
+Route::apiResource('products', ProductController::class);
+Route::fallback(function(){
+    return response()->json(['message' => 'Not Found!'], 404);
+});
