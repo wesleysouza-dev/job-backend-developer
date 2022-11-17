@@ -36,7 +36,7 @@ class StoreProductRequest extends FormRequest
             'category'  => ['required']
         ];
 
-        if (!$request->product->id) {
+        if (!$request?->product?->id) {
             foreach ($rules as $key => $value) {
                 $rules["*.${key}"] = $value;
                 unset($rules[$key]);
