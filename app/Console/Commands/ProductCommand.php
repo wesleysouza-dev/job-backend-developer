@@ -13,14 +13,6 @@ use Carbon\Carbon;
 class ProductCommand extends Command
 {
     /**
-     * URL Base - API Products.
-     * O ideal seria colocar no .env
-     *
-     * @var string
-     */
-    protected $URL_BASE_API_PRODUCTS = 'https://fakestoreapi.com/products';
-
-    /**
      * The name and signature of the console command.
      *
      * @var string
@@ -52,7 +44,7 @@ class ProductCommand extends Command
     public function handle()
     {
         $queryStringID = $this->option('id');
-        $response = Http::get($this->URL_BASE_API_PRODUCTS . '/' . $this->option('id'));
+        $response = Http::get(env('APP_URL_API_PRODUCTS') . '/' . $this->option('id'));
 
         if ($response->ok()) {
             $products = $response->object();
