@@ -72,7 +72,9 @@ $ php artisan products:import
 $ php artisan products:import --id={id}
 ```
 
-##### Obs: substitua o {id} pelo id do produto à ser importado
+##### Obs: substitua o {id} pelo id do produto à ser importado, de 1 a 20.
+
+##### API base utilizada: https://fakestoreapi.com/docs
 
 ## - Filtros disponíveis
 
