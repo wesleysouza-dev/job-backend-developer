@@ -1,27 +1,8 @@
 <p align="center"><a href="hhttps://www.adoorei.com.br/" target="_blank"><img src="https://adoorei.s3.us-east-2.amazonaws.com/images/loje_teste_logoadoorei_1662476663.png" width="160"></a></p>
 
-
-## Teste para Desenvolvedor Back-end
-
-Seja muito bem-vindo(a), futuro Developer da Adoorei.
-
-Nós, recrutadores juntamente com a nossa equipe de DEV, desenvolvemos um teste prático para avaliar tecnicamente todos os candidatos que estão participando do nosso processo seletivo para a vaga de Desenvolvimento Back End.
-
-Boa sorte!
-
-
-## Objetivo
-
-- Por meio de um API REST em Laravel, crie uma CRUD.
-- Após a execução da etapa anterior, crie um comando artisan que se comunicará com uma outra API para importar em seu banco de dados.
-
-## Primeiro passo
-
-Para iniciar o desenvolvimento, você deverá criar um Fork desse projeto. Obs: Não serão aceitas Pull Requests (PRs) 
-
 ## Configuração do ambiente
 
-Para iniciar essa etapa de configuração do ambiente, é obrigatório ter o [Docker](https://docs.docker.com/desktop/ "Docker") instalado em sua máquina. 
+Para iniciar essa etapa de configuração do ambiente, é obrigatório ter o [Docker](https://docs.docker.com/desktop/ "Docker") instalado em sua máquina.
 
 Navegue até a pasta raíz do projeto e execute o comando: `$ docker compose up -d` para inicializar o container.
 
@@ -29,7 +10,14 @@ Copie o arquivo .env.example e renomeie para .env dentro da pasta raíz da aplic
 
 `$ cp .env.example .env`
 
-Após a criação do arquivo .env, acesse o container da aplicação. 
+Confira em seu arquivo .env se há as duas entradas abaixo:
+
+```dosini
+APP_URL_API=http://localhost:8000/api
+APP_URL_API_PRODUCTS=https://fakestoreapi.com/products
+```
+
+Após a criação do arquivo .env, acesse o container da aplicação.
 
 Para isso, use o comando `$ docker exec -it adoorei_test_app sh`.
 
@@ -42,65 +30,61 @@ $ php artisan migrate
 
 ```
 
-Tudo certo para começar o teste! Após rodar os comandos listados acima seu ambiente estará pronto. 
+## Endpoints da API disponíveis
 
-Acesse localhost:8000 no seu navegador para visualizar a aplicação.
-
-## Funcionalidades a serem implementadas.
-Neste teste, seu objetivo será desenvolver uma API REST.  Por tanto você deverá focar em construir apenas uma API, não se preocupe com a parte visual ou outras coisas que não sejam pertinentes.
-
-##### CRUD de produtos
-Você deverá desenvolver as principais operações para o gerenciamento de um catálogo de produtos, que são:
-- Criação
-- Listagem
-- Atualização
-- Exclusão
-
-É necessário que o produto tenha a seguinte estrutura:
-Campo       | Tipo      | Obrigatório   | Pode se repetir
------------ | :------:  | :------:      | :------:
-id          | int       | true          | false
-name        | string    | true          | false        
-price       | float     | true          | true
-description  | text      | true          | true
-category    | string    | true          | true
-image_url   | url       | false         | true
-
-Os endpoints para criação e atualização devem seguir o  formato do payload abaixo, **É importante que todos os atributos passem por uma camada de validação para que os dados sejam armazenados na base de dados da forma correta.**
-
-```json
-{
-    "name": "product name",
-    "price": 781.22,
-    "description": "Lorenzo Ipsulum",
-    "category": "test",
-    "image_url": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg"
-}
-
+```sh
+GET [list all] localhost:8000/api/products
+GET [list single] localhost:8000/api/products/{id}
+POST [create] localhost:8000/api/products
+PUT [update] localhost:8000/api/products/{id}
+DEL [delete] localhost:8000/api/products/{id}
 ```
 
-##### Busca de produtos
-É necessário que o sistema tenha algumas funcionalidades de buscas para a manutenção do catálogo de produtos, sendo elas: 
+## - Exemplo de Create
 
-- Busca pelos campos name e category (trazer resultados que batem com ambos os campos).
-- Busca por uma categoria específica.
-- Busca de produtos com e sem imagem.
-- Buscar um produto pelo seu ID.
+A inserção é feita em lote, portanto, deverá se passar um array de objetos (mesmo para inserir apenas um registro). Exemplo abaixo:
 
-##### Importação de produtos de uma API externa
-Crie um comando que buscará produtos numa API externa e armazenará todos os resultados dentro de sua base de dados. Essa aplicação é necessária para que o sistema consiga importar produtos que estão em outro serviço. Sugerimos criar um comando artisan como abaixo:
+```json
+[
+    {
+        "name": "Camiseta Plo",
+        "price": 120.9,
+        "description": "Camiseta social Polo, tamanho P ao GG.",
+        "category": "Roupas",
+        "image_url": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg"
+    }
+]
+```
+
+##### Obs: A ação de Update não aceita alteração em lote, portanto, enviar o objeto direto.
+
+## Como importar produtos de API externa
+
+-- Todos os produtos (inserção em massa)
 
 `php artisan products:import`
 
-Esse comando deverá ter uma opção de importar um único produto da API externa, que será encontrado através de um ID externo.
+-- Produto individual
 
-`php artisan products:import --id=123`
+`php artisan products:import --id={id}`
 
-Utilize a seguinte API para importar os produtos: https://fakestoreapi.com/docs
+##### Obs: substitua o {id} pelo id do produto à ser importado
 
+## - Filtros disponíveis
 
-------------
+Os filtros disponíveis podem ser aplicados juntos ou isoladamente, em forma de queryString.
 
+```dosini
+id => Number
+name => String
+category => String
+image_url => Boolean
+```
 
+```
+Exemplo: ?id=5&name=camiseta&category=roupas&image_url=false
+```
 
-É isso!. Ficamos muito felizes com a sua aplicação para esse Teste. Estamos à sua disposição para tirar qualquer dúvida. Boa sorte! 😉
+---
+
+Forte abraço! 😉
