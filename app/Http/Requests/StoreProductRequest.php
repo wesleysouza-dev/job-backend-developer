@@ -26,14 +26,24 @@ class StoreProductRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
-            '*.name' => ['required', Rule::unique('products')->ignore($this->product)],
-            '*.price'  => ['required', 'numeric'],
-            '*.description'  => ['required'],
-            '*.category'  => 'required'
+
+        $rules = [
+            'name' => ['required', Rule::unique('products')->ignore($this->product)],
+            'price'  => ['required', 'numeric'],
+            'description'  => ['required'],
+            'category'  => ['required']
         ];
+
+        if (!$request->product->id) {
+            foreach ($rules as $key => $value) {
+                $rules["*.${key}"] = $value;
+                unset($rules[$key]);
+            }
+        }
+
+        return $rules;
     }
 
     protected function failedValidation(Validator $validator)
