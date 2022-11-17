@@ -47,7 +47,7 @@ A inserção é feita em lote, portanto, deverá se passar um array de objetos (
 ```json
 [
     {
-        "name": "Camiseta Plo",
+        "name": "Camiseta Polo",
         "price": 120.9,
         "description": "Camiseta social Polo, tamanho P ao GG.",
         "category": "Roupas",
@@ -62,11 +62,15 @@ A inserção é feita em lote, portanto, deverá se passar um array de objetos (
 
 -- Todos os produtos (inserção em massa)
 
-`php artisan products:import`
+```bash
+$ php artisan products:import
+```
 
 -- Produto individual
 
-`php artisan products:import --id={id}`
+```bash
+$ php artisan products:import --id={id}
+```
 
 ##### Obs: substitua o {id} pelo id do produto à ser importado
 
