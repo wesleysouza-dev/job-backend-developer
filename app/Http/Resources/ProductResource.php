@@ -14,6 +14,6 @@ class ProductResource extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        return ($request->method() === 'GET') ? parent::toArray($request) : $request->all();
     }
 }

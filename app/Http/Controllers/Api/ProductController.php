@@ -7,6 +7,7 @@ use App\Http\Requests\StoreProductRequest;
 use App\Http\Resources\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
@@ -45,7 +46,6 @@ class ProductController extends Controller
                 }
             }
        });
-
         return ProductResource::collection($products->get());
     }
 
@@ -57,7 +57,12 @@ class ProductController extends Controller
      */
     public function store(StoreProductRequest $request)
     {
-        $products = Product::create($request->all());
+        if (!is_array(current($request->all()))) {
+            $request = new Request([$request->all()]);
+        }
+
+        $validatedData = $request->validated();
+        $products = Product::insert($request->all());
 
         return new ProductResource($products);
     }
